@@ -56,8 +56,10 @@ node server.mjs          # 或 npm start
 ```
 server.mjs              本地服务器:静态文件 + API 重实现(零依赖)
 site/
-  index.html            原站入口(未改动)
+  index.html            原站入口(中文化 + 交流入口)
   assets/               打包后的 JS / CSS / 分享图
+  ghosts.mjs            真·同屏多人:星灵骑士渲染模块
+  chat/                 交流浮层的微信 / QQ 群二维码
   *.webp, *.png         游戏贴图(绘画、天空、柏树、地面填充、流场)
   _vercel/insights/     原站 Vercel 分析脚本的本地空 stub
 data/                   运行时生成:排行榜持久化 + token 签名密钥

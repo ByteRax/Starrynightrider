@@ -38,7 +38,10 @@
       <div id="plaque">
         <h1>星夜骑士</h1>
         <p class="sub">据 文森特·梵高 &middot; <em>《星月夜》</em>,1889</p>
-        <button id="enter" type="button">走进画中</button>
+        <div class="plaque-actions">
+          <button id="enter" type="button">走进画中</button>
+          <button id="chat-open" type="button">交流</button>
+        </div>
         <button id="open-board" type="button">排行榜</button>
       </div>
       <a id="handle" href="https://x.com/ebbyamir" target="_blank" rel="noopener">@ebbyamir</a>
@@ -117,6 +120,46 @@
     <div id="loading"><div class="pulse"></div><span>正在调颜料…</span></div>
     <div id="fatal" class="hidden"></div>
 
+    <!-- 交流浮层:微信群 / QQ 群二维码 -->
+    <div id="chat" class="hidden">
+      <div class="card">
+        <h2>交流</h2>
+        <p class="chat-sub">扫码加入,一起夜骑</p>
+        <div class="chat-grid">
+          <figure>
+            <img src="/chat/wechat.webp" alt="微信群二维码" decoding="async" />
+            <figcaption>微信</figcaption>
+          </figure>
+          <figure>
+            <img src="/chat/ai_qq.webp" alt="QQ 群二维码" decoding="async" />
+            <figcaption>QQ</figcaption>
+          </figure>
+        </div>
+        <div class="row">
+          <button id="chat-close" type="button">关闭</button>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="/ghosts.mjs"></script>
+    <script>
+      (() => {
+        const chat = document.getElementById("chat");
+        const open = document.getElementById("chat-open");
+        const close = document.getElementById("chat-close");
+        if (!chat || !open || !close) return;
+        open.addEventListener("click", () => chat.classList.remove("hidden"));
+        close.addEventListener("click", () => chat.classList.add("hidden"));
+        chat.addEventListener("click", (e) => {
+          if (e.target === chat) chat.classList.add("hidden");
+        });
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !chat.classList.contains("hidden")) {
+            e.stopPropagation();
+            chat.classList.add("hidden");
+          }
+        }, true);
+      })();
+    </script>
   </body>
 </html>
