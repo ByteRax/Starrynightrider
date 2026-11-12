@@ -52,3 +52,19 @@
 #games button{font:600 12px / 1 var(--sans);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;color:#fff6dee6;background:#ffffff1a;border:0;border-radius:999px;padding:.85em 1.6em;transition:filter .2s,transform .15s;box-shadow:inset 0 0 0 1px #ffffff29}
 #games button:hover{filter:brightness(1.15)}
 #games button:active{transform:scale(.97)}
+
+/* —— 原作者说明(原排行榜位置:底部居中) —— */
+#credit{pointer-events:auto;z-index:3;position:absolute;left:50%;transform:translateX(-50%);bottom:12px;width:max-content;max-width:min(92vw,680px);text-align:center;font:italic 500 12.5px / 1.6 var(--serif);letter-spacing:.05em;color:#e2dbc873;margin:0}
+#credit a{color:#e2dbc8a3;text-decoration:none;border-bottom:1px solid #e2dbc82e;transition:color .2s,border-color .2s}
+#credit a:hover{color:#f6e7b8;border-color:#f3d27a66}
+@media (max-width:760px){#credit{bottom:46px}}
+body.touch #credit{bottom:14px}
+@media (max-height:500px){#credit{display:none}}
+
+/* —— 排行榜按钮移入按钮行,样式对齐走进画中 —— */
+.plaque-actions #open-board{display:inline-block;margin:0;font:600 clamp(12px, 1.5vh, 15px) / 1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#1a1305;cursor:pointer;background:linear-gradient(#ffe08a,#f2b63c);border:0;border-radius:999px;padding:.95em 1.9em;transition:transform .2s,filter .2s;box-shadow:inset 0 0 0 1px #fff0be80,0 8px 30px #ffb43252}
+.plaque-actions #open-board:hover{filter:brightness(1.08);transform:translateY(-1px)scale(1.03)}
+.plaque-actions #open-board:active{transform:scale(.98)}
+.plaque-actions{flex-wrap:wrap}
+.plaque-actions button{white-space:nowrap}
+@media (max-width:760px){.plaque-actions{gap:9px}.plaque-actions #enter,.plaque-actions #open-board{padding:.9em 1.1em}#chat-open,#games-open{padding:.9em 1.15em}}

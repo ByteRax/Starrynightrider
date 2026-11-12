@@ -40,12 +40,13 @@
         <p class="sub">据 文森特·梵高 &middot; <em>《星月夜》</em>,1889</p>
         <div class="plaque-actions">
           <button id="enter" type="button">走进画中</button>
+          <button id="open-board" type="button">排行榜</button>
           <button id="chat-open" type="button">交流</button>
           <button id="games-open" type="button">其它游戏</button>
         </div>
-        <button id="open-board" type="button">排行榜</button>
       </div>
       <a id="handle" href="https://x.com/ebbyamir" target="_blank" rel="noopener">@ebbyamir</a>
+      <p id="credit">本站为个人学习用途的中文复刻 · 原作 <a href="https://starrynightrider.com/" target="_blank" rel="noopener">Starry Nightrider</a> © <a href="https://x.com/ebbyamir" target="_blank" rel="noopener">@ebbyamir</a> · 版权归原作者所有,请支持原作</p>
     </div>
 
     <div id="hud" class="hidden">
@@ -221,6 +222,24 @@
             games.classList.add("hidden");
           }
         }, true);
+      })();
+    </script>
+    <script>
+      // 原作者说明:与上方按钮、与页面底部的间距保持相等(铭牌位置由游戏按画框动态计算,需跟随)
+      (() => {
+        const credit = document.getElementById("credit");
+        const plaque = document.getElementById("plaque");
+        if (!credit || !plaque) return;
+        const fit = () => {
+          if (!credit.offsetParent) return; // 画廊隐藏时跳过
+          const h = window.innerHeight;
+          const b = plaque.getBoundingClientRect().bottom;
+          const ch = credit.offsetHeight;
+          credit.style.bottom = Math.max(4, (h - ch - b) / 2) + "px";
+        };
+        new MutationObserver(fit).observe(plaque, { attributes: true, attributeFilter: ["style"] });
+        window.addEventListener("resize", fit);
+        fit();
       })();
     </script>
     <script>
