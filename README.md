@@ -6,6 +6,29 @@
 
 **整个界面已翻译为中文**(画廊、HUD、小地图图例、招式名、提示浮窗、排行榜、地标/咖啡馆/画廊/广场名等),由 `translate.mjs` 对 JS 包与 HTML 做精确替换生成;键盘按键名(Space/W/A/D 等)与作者署名 @ebbyamir 保留原文。`translate.mjs` 只需运行一次,重复运行会因找不到英文原文而报错。
 
+## 部署到阿里云 ESA(边缘)
+
+仓库根目录的 `esa.jsonc` 已配置好 ESA Pages 构建:
+
+- 静态资源:`site/` 目录原样托管
+- 边缘函数:`functions/api.js` 接管所有未命中静态文件的请求(即 `/api/*`),重现排行榜与在线接口
+
+部署前置步骤(一次性):
+
+1. ESA 控制台开通「函数和Pages」,从 GitHub 导入本仓库(默认会读取 `esa.jsonc`)
+2. 控制台「边缘计算和AI > KV存储」创建名为 **`starrynightrider`** 的存储空间(排行榜持久化;名称不同的话改 `functions/api.js` 顶部的 `KV_NAMESPACE`)
+
+与本地 `node server.mjs` 版的差异:
+
+| | 本地版 | ESA 版 |
+|---|---|---|
+| 排行榜存储 | `data/leaderboard.json` 文件 | EdgeKV(全球边缘同步,最终一致;偶发提交失败重试即可) |
+| token 校验 | HMAC 签名 | KV 存一次性 token,用后即焚 |
+| 多人同屏 | 全局共享 | 边缘**实例内存**:同一边缘节点的玩家互见(位置心跳写 KV 会打爆写入配额,故不入 KV) |
+| KV 不可用 | — | 自动降级为实例内存,游戏可玩但榜单不持久 |
+
+接口契约与本地版完全一致,游戏代码(`site/`)两边通用。
+
 ## 致谢
 
 原作 **Starry Nightrider** 由 [@ebbyamir](https://x.com/ebbyamir) 创作 → https://starrynightrider.com/

@@ -1,0 +1,13 @@
+// ESA Pages 构建配置 —— 阿里云边缘安全加速
+// 文档: https://help.aliyun.com/zh/edge-security-acceleration/esa/user-guide/build-pages
+// 路由: 命中 site/ 静态文件直接返回;未命中(如 /api/*)走 functions/api.js 边缘函数
+// 前置条件: 控制台「边缘计算和AI > KV存储」需存在名为 starrynightrider 的存储空间(排行榜持久化)
+{
+  "name": "starrynightrider",
+  "entry": "./functions/api.js",
+  "installCommand": "",
+  "buildCommand": "",
+  "assets": {
+    "directory": "./site"
+  }
+}
