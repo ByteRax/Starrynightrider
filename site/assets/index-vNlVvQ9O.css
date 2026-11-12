@@ -3,9 +3,9 @@
 /* —— 交流入口与浮层 —— */
 .plaque-actions{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:1.1em}
 .plaque-actions #enter{margin-top:0}
-#chat-open{font:600 clamp(12px, 1.5vh, 15px) / 1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#ffe9a3e0;cursor:pointer;background:#080c2866;-webkit-backdrop-filter:blur(8px);border:0;border-radius:999px;padding:.95em 1.7em;transition:transform .2s,filter .2s,box-shadow .2s;box-shadow:inset 0 0 0 1.5px #f3d27a99}
-#chat-open:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:inset 0 0 0 1.5px #ffd76a,0 6px 24px #ffc85a38}
-#chat-open:active{transform:scale(.97)}
+#chat-open,#games-open{font:600 clamp(12px, 1.5vh, 15px) / 1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#ffe9a3e0;cursor:pointer;background:#080c2866;-webkit-backdrop-filter:blur(8px);border:0;border-radius:999px;padding:.95em 1.7em;transition:transform .2s,filter .2s,box-shadow .2s;box-shadow:inset 0 0 0 1.5px #f3d27a99}
+#chat-open:hover,#games-open:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:inset 0 0 0 1.5px #ffd76a,0 6px 24px #ffc85a38}
+#chat-open:active,#games-open:active{transform:scale(.97)}
 #chat{z-index:8;background:radial-gradient(90% 80% at 50% 40%,#06092280,#040616cc);place-items:center;padding:20px;animation:.5s both boardin;display:grid;position:fixed;inset:0}
 #chat .card{color:#fff3d4;-webkit-backdrop-filter:blur(18px)saturate(1.4);-webkit-user-select:text;user-select:text;background:#0a0e2ec7;border-radius:22px;flex-direction:column;gap:14px;width:min(94vw,460px);max-height:min(92vh,760px);padding:26px 26px 22px;display:flex;box-shadow:inset 0 0 0 1.5px #f3d27a66,0 30px 90px #000014b3}
 #chat h2{text-align:center;font:500 clamp(20px, 3vh, 26px) / 1.1 var(--serif);letter-spacing:.14em;text-transform:uppercase;color:#f6e7b8;margin:0}
@@ -36,3 +36,19 @@
 #name-modal button:active{transform:scale(.97)}
 #name-go{color:#1a1305!important;background:linear-gradient(#ffe08a,#f2b63c)!important;box-shadow:inset 0 0 0 1px #fff0be80!important}
 #name-cancel{color:#fff6dee6;background:#ffffff1a;box-shadow:inset 0 0 0 1px #ffffff29}
+
+/* —— 其它游戏浮层 —— */
+#games{z-index:8;background:radial-gradient(90% 80% at 50% 40%,#06092280,#040616cc);place-items:center;padding:20px;animation:.5s both boardin;display:grid;position:fixed;inset:0}
+#games .card{color:#fff3d4;-webkit-backdrop-filter:blur(18px)saturate(1.4);background:#0a0e2ec7;border-radius:22px;flex-direction:column;gap:14px;width:min(94vw,400px);padding:26px 26px 22px;display:flex;box-shadow:inset 0 0 0 1.5px #f3d27a66,0 30px 90px #000014b3}
+#games h2{text-align:center;font:500 clamp(20px, 3vh, 26px) / 1.1 var(--serif);letter-spacing:.14em;color:#f6e7b8;margin:0}
+#games .chat-sub{text-align:center;font:italic 500 13.5px / 1.3 var(--serif);color:#fff3d499;margin:0}
+#games .games-list{display:flex;flex-direction:column;gap:10px}
+#games .games-list a{display:flex;flex-direction:column;gap:4px;color:#fff6de;text-decoration:none;background:#ffffff14;border-radius:14px;padding:.9em 1.1em;transition:filter .2s,transform .15s;box-shadow:inset 0 0 0 1px #f3d27a4d}
+#games .games-list a:hover{filter:brightness(1.18);transform:translateY(-1px)}
+#games .games-list a:active{transform:scale(.98)}
+#games .game-name{font:600 16px / 1.2 var(--serif);letter-spacing:.06em}
+#games .game-host{font:500 11px / 1 var(--sans);letter-spacing:.08em;color:#ffe9a399}
+#games .row{margin-top:2px}
+#games button{font:600 12px / 1 var(--sans);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;color:#fff6dee6;background:#ffffff1a;border:0;border-radius:999px;padding:.85em 1.6em;transition:filter .2s,transform .15s;box-shadow:inset 0 0 0 1px #ffffff29}
+#games button:hover{filter:brightness(1.15)}
+#games button:active{transform:scale(.97)}

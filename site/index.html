@@ -41,6 +41,7 @@
         <div class="plaque-actions">
           <button id="enter" type="button">走进画中</button>
           <button id="chat-open" type="button">交流</button>
+          <button id="games-open" type="button">其它游戏</button>
         </div>
         <button id="open-board" type="button">排行榜</button>
       </div>
@@ -141,6 +142,31 @@
       </div>
     </div>
 
+    <!-- 其它游戏浮层:同站其它联机游戏入口 -->
+    <div id="games" class="hidden">
+      <div class="card">
+        <h2>其它游戏</h2>
+        <p class="chat-sub">换一款,继续玩</p>
+        <div class="games-list">
+          <a href="https://petalwake.tanranran.cn/" target="_blank" rel="noopener">
+            <span class="game-name">魔女宅急便</span>
+            <span class="game-host">petalwake.tanranran.cn</span>
+          </a>
+          <a href="https://startknight.tanranran.cn/" target="_blank" rel="noopener">
+            <span class="game-name">梵高星夜骑士联机版</span>
+            <span class="game-host">startknight.tanranran.cn</span>
+          </a>
+          <a href="https://gun.tanranran.cn/" target="_blank" rel="noopener">
+            <span class="game-name">四角洲行动联机版</span>
+            <span class="game-host">gun.tanranran.cn</span>
+          </a>
+        </div>
+        <div class="row">
+          <button id="games-close" type="button">关闭</button>
+        </div>
+      </div>
+    </div>
+
     <!-- 昵称浮层:走进画中前报名号 -->
     <div id="name-modal" class="hidden">
       <div class="card">
@@ -173,6 +199,26 @@
           if (e.key === "Escape" && !chat.classList.contains("hidden")) {
             e.stopPropagation();
             chat.classList.add("hidden");
+          }
+        }, true);
+      })();
+    </script>
+    <script>
+      // 其它游戏浮层:点击列表项新开对应站点
+      (() => {
+        const games = document.getElementById("games");
+        const open = document.getElementById("games-open");
+        const close = document.getElementById("games-close");
+        if (!games || !open || !close) return;
+        open.addEventListener("click", () => games.classList.remove("hidden"));
+        close.addEventListener("click", () => games.classList.add("hidden"));
+        games.addEventListener("click", (e) => {
+          if (e.target === games) games.classList.add("hidden");
+        });
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !games.classList.contains("hidden")) {
+            e.stopPropagation();
+            games.classList.add("hidden");
           }
         }, true);
       })();
