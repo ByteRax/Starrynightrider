@@ -64,7 +64,7 @@ const checkToken = (token) => {
   return Number.isFinite(expiry) && Date.now() < expiry;
 };
 
-const HANDLE_RE = /^[A-Za-z0-9_]{1,15}$/;
+const HANDLE_RE = /^[\u4e00-\u9fa5A-Za-z0-9_]{1,12}$/; // 中文名号(四大名著人物)或字母数字
 const top = () =>
   [...board.entries]
     .sort((a, b) => b.score - a.score || a.postedAt - b.postedAt)

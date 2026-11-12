@@ -280,7 +280,7 @@ function tickInner() {
     if (pos) {
       gh.tag.style.opacity = 0.85 * target;
       gh.tag.style.transform = `translate(-50%,-100%) translate(${pos.x.toFixed(1)}px,${pos.y.toFixed(1)}px)`;
-      const name = gh.handle ? "@" + gh.handle : "骑手 " + gh.slot;
+      const name = gh.handle || "骑手 " + gh.slot;
       if (gh.tag.textContent !== name) gh.tag.textContent = name;
     } else {
       gh.tag.style.opacity = 0;

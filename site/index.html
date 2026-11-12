@@ -101,8 +101,8 @@
         <div id="board-you">
           <p class="score">你的分数 <strong id="board-score">0</strong></p>
           <form id="board-form" autocomplete="off">
-            <label for="board-handle">@</label>
-            <input id="board-handle" name="handle" maxlength="16" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="你的 X 账号" />
+            <label for="board-handle">名号</label>
+            <input id="board-handle" name="handle" maxlength="12" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="你的名号" />
             <button id="board-post" type="submit">发布分数</button>
           </form>
         </div>
@@ -141,6 +141,22 @@
       </div>
     </div>
 
+    <!-- 昵称浮层:走进画中前报名号 -->
+    <div id="name-modal" class="hidden">
+      <div class="card">
+        <h2>报上名号</h2>
+        <p class="chat-sub">名号会留在排行榜与同行骑手眼中</p>
+        <div class="name-row">
+          <input id="name-input" maxlength="12" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="留空随机取名" />
+          <button id="name-random" type="button" title="随机取四大名著人物">随机</button>
+        </div>
+        <div class="row">
+          <button id="name-go" type="button">进入画中</button>
+          <button id="name-cancel" type="button">取消</button>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="/ghosts.mjs"></script>
     <script>
       (() => {
@@ -157,6 +173,77 @@
           if (e.key === "Escape" && !chat.classList.contains("hidden")) {
             e.stopPropagation();
             chat.classList.add("hidden");
+          }
+        }, true);
+      })();
+    </script>
+    <script>
+      // 昵称浮层:点「走进画中」先报名号,留空则随机取四大名著人物
+      (() => {
+        const NAMES = [
+          // 西游记
+          "孙悟空","唐三藏","猪八戒","沙和尚","白龙马","如来佛祖","观世音","太上老君","二郎神","红孩儿","牛魔王","铁扇公主","菩提祖师","托塔天王","哪吒","镇元大仙","六耳猕猴",
+          // 三国演义
+          "刘备","关羽","张飞","诸葛亮","曹操","孙权","赵云","马超","黄忠","周瑜","鲁肃","司马懿","吕布","貂蝉","董卓","袁绍","姜维","庞统","孙尚香","大乔","小乔",
+          // 水浒传
+          "宋江","卢俊义","吴用","林冲","鲁智深","武松","李逵","燕青","花荣","扈三娘","孙二娘","晁盖","柴进","阮小七","杨志","关胜","秦明","呼延灼","时迁","张顺",
+          // 红楼梦
+          "贾宝玉","林黛玉","薛宝钗","王熙凤","贾母","刘姥姥","贾政","贾琏","探春","迎春","惜春","妙玉","袭人","晴雯","史湘云","香菱","贾元春","平儿","紫鹃",
+        ];
+        const KEY = "nightrider-handle";
+        const enter = document.getElementById("enter");
+        const modal = document.getElementById("name-modal");
+        const input = document.getElementById("name-input");
+        const random = document.getElementById("name-random");
+        const go = document.getElementById("name-go");
+        const cancel = document.getElementById("name-cancel");
+        if (!enter || !modal || !input || !random || !go || !cancel) return;
+
+        const saved = (() => { try { return localStorage.getItem(KEY) || ""; } catch { return ""; } })();
+        let bypass = false;
+
+        const openModal = () => {
+          input.value = saved;
+          modal.classList.remove("hidden");
+          setTimeout(() => input.focus(), 60);
+        };
+        const closeModal = () => modal.classList.add("hidden");
+        const pick = () => {
+          let name;
+          do { name = NAMES[Math.floor(Math.random() * NAMES.length)]; } while (name === input.value && NAMES.length > 1);
+          input.value = name;
+        };
+        const start = () => {
+          let name = input.value.trim().replace(/^@+/, "");
+          if (!name) { pick(); name = input.value.trim(); }
+          if (!/^[\u4e00-\u9fa5A-Za-z0-9_]{1,12}$/.test(name)) {
+            input.focus();
+            input.style.boxShadow = "inset 0 0 0 1.5px #ff7a5a";
+            setTimeout(() => (input.style.boxShadow = ""), 900);
+            return;
+          }
+          try { localStorage.setItem(KEY, name); } catch {}
+          closeModal();
+          bypass = true;
+          enter.click();
+          bypass = false;
+        };
+
+        // capture 阶段拦截原「走进画中」逻辑,先报名号
+        enter.addEventListener("click", (e) => {
+          if (bypass) return;
+          e.stopImmediatePropagation();
+          openModal();
+        }, true);
+        go.addEventListener("click", start);
+        input.addEventListener("keydown", (e) => { if (e.key === "Enter") start(); });
+        random.addEventListener("click", pick);
+        cancel.addEventListener("click", closeModal);
+        modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+            e.stopPropagation();
+            closeModal();
           }
         }, true);
       })();

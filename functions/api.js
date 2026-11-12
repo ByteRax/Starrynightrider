@@ -9,7 +9,7 @@ const KV_NAMESPACE = "starrynightrider";
 const BOARD_KEY = "board:v1"; // 单 Key 存全榜(Value 上限 1.8MB ≈ 数万条,超出前会按 top 2000 截断)
 const MAX_ENTRIES = 2000;
 const TOKEN_TTL_MS = 10 * 60 * 1000;
-const HANDLE_RE = /^[A-Za-z0-9_]{1,15}$/;
+const HANDLE_RE = /^[\u4e00-\u9fa5A-Za-z0-9_]{1,12}$/; // 中文名号(四大名著人物)或字母数字
 
 // ---------- 纯逻辑(可本地单测) ----------
 
@@ -85,7 +85,8 @@ const takeToken = async (token) => {
     await k.delete("t:" + token);
     return Date.now() < Number(raw);
   } catch {
-    return false;
+    kvBroken = true; // 与整体降级策略一致:KV 故障时放行,保证可玩
+    return true;
   }
 };
 

@@ -35,6 +35,22 @@ assert.equal(topN(Array.from({ length: 40 }, (_, i) => ({ h: "u" + i, s: i, t: i
   console.log("  2000 条最坏榜大小:", (size / 1024).toFixed(0), "KB < 1.8MB ✓");
 }
 
+// 中文昵称:提交走通(KV 缺失降级内存,token 不校验)
+{
+  const res = await api.default.fetch(
+    new Request("http://x/api/leaderboard", { method: "POST", body: JSON.stringify({ handle: "孙悟空", score: 888, token: "" }) }),
+  );
+  const data = await res.json();
+  assert.equal(data.ok, true);
+  assert.equal(data.handle, "孙悟空");
+  assert.equal(data.top[0].handle, "孙悟空");
+  // 非法名号(超长/特殊字符)
+  const bad = await api.default.fetch(
+    new Request("http://x/api/leaderboard", { method: "POST", body: JSON.stringify({ handle: "a".repeat(13), score: 1, token: "" }) }),
+  );
+  assert.equal((await bad.json()).ok, false);
+}
+
 // presence:计数/活跃广播/bye/过期/slot 复用
 {
   const a = presence({ id: "x", uid: "riderA", haul: 50, p: { x: 1, y: 1, z: 1, h: 0, mode: 0, s: 3 } });
