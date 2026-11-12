@@ -1,0 +1,7 @@
+data/
+.git/
+.github/
+*.pem
+.DS_Store
+node_modules/
+test/

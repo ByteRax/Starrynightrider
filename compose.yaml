@@ -1,0 +1,14 @@
+# Starry Nightrider —— docker compose 部署(适配 1Panel)
+# 启动: docker compose up -d --build
+# 数据: ./data(排行榜持久化)自动挂载
+services:
+  starrynightrider:
+    build: .
+    container_name: starrynightrider
+    restart: unless-stopped
+    ports:
+      - "8090:8090"
+    environment:
+      PORT: "8090"
+    volumes:
+      - ./data:/app/data
