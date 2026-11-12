@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="color-scheme" content="dark" />
+    <title>星夜骑士</title>
+    <meta name="description" content="骑自行车穿行梵高的《星月夜》:收集光球,送进尖塔,晒出你的分数。" />
+    <link rel="canonical" href="https://starrynightrider.com/" />
+    <meta name="theme-color" content="#0b1a5c" />
+    <!-- what a link to the game looks like when it is shared -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="星夜骑士" />
+    <meta property="og:title" content="星夜骑士" />
+    <meta property="og:description" content="骑自行车穿行梵高的《星月夜》:收集光球,送进尖塔,晒出你的分数。" />
+    <meta property="og:url" content="https://starrynightrider.com/" />
+    <meta property="og:image" content="https://starrynightrider.com/og-painting.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="漩涡状的星空、柏树与村庄——《星月夜》化作一座可以骑行穿行的小镇。" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="星夜骑士" />
+    <meta name="twitter:description" content="骑自行车穿行梵高的《星月夜》:收集光球,送进尖塔,晒出你的分数。" />
+    <meta name="twitter:image" content="https://starrynightrider.com/og-painting.jpg" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b1a5c'/%3E%3Ccircle cx='40' cy='24' r='15' fill='%23ffd94a'/%3E%3Ccircle cx='33' cy='21' r='13' fill='%230b1a5c'/%3E%3Cpath d='M6 46c10-10 18 6 28-2s14-6 24 2' stroke='%237fb6ff' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <script type="module" crossorigin src="/assets/index-B4H7D6Hj.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-vNlVvQ9O.css">
+  </head>
+  <body>
+    <canvas id="gl"></canvas>
+
+    <!-- the gallery: a dark wall with the live painting hanging on it -->
+    <div id="gallery">
+      <div id="wall"></div>
+      <div id="frame-shadow"></div>
+      <div id="frame"></div>
+      <div id="frame-lip"></div>
+      <div id="plaque">
+        <h1>星夜骑士</h1>
+        <p class="sub">据 文森特·梵高 &middot; <em>《星月夜》</em>,1889</p>
+        <button id="enter" type="button">走进画中</button>
+        <button id="open-board" type="button">排行榜</button>
+      </div>
+      <a id="handle" href="https://x.com/ebbyamir" target="_blank" rel="noopener">@ebbyamir</a>
+    </div>
+
+    <div id="hud" class="hidden">
+      <div id="stars"><span class="glyph">✦</span><span id="star-count">0</span><span id="mult"></span></div>
+      <div id="bank"><span id="bank-count">0</span> 枚已送达</div>
+      <div id="hyper"><div id="hyper-fill"></div></div>
+      <div id="trick"><span id="trick-name"></span><span id="trick-points"></span></div>
+      <div id="brief">
+        <p class="lead">尽可能多地收集光球,<br />再把它们送进尖塔。</p>
+        <p class="keys for-keys"><kbd>Space</kbd> 跳跃 &nbsp;·&nbsp; 空中 <kbd>W</kbd><kbd>S</kbd> 翻转 &nbsp;<kbd>A</kbd><kbd>D</kbd> 旋转 &nbsp;<kbd>E</kbd> 花式</p>
+      </div>
+      <div id="finish">
+        <p>已送达 <strong id="finish-score">0</strong> 枚。今晚就到这里?</p>
+        <div class="row">
+          <button id="finish-yes" type="button">结束游戏</button>
+          <button id="finish-no" type="button">继续骑行</button>
+        </div>
+        <p class="keys for-keys">按 <kbd>Enter</kbd> 结束</p>
+      </div>
+      <div id="riders"><span class="dot"></span><span id="riders-count">1</span><span id="riders-label">位骑手在画中</span><span id="riders-best"></span></div>
+      <div id="guide">
+        <span id="guide-arrow">↑</span>
+        <span id="guide-label">教堂尖塔</span>
+        <span id="guide-dist"></span>
+      </div>
+      <div id="hint">
+        <span><kbd>A</kbd><kbd>D</kbd> 转向</span>
+        <span><kbd>W</kbd> 踩踏板</span>
+        <span><kbd>S</kbd> 刹车</span>
+        <span><kbd>Space</kbd> 跳跃</span>
+        <span><kbd>Space ×3</kbd> 飞行</span>
+        <span><kbd>E</kbd> 空中花式</span>
+        <span><kbd>F</kbd> 步行</span>
+        <span><kbd>T</kbd> 剧院</span>
+      </div>
+      <div id="pad">
+        <div id="stick"><div id="stick-knob"></div></div>
+        <button id="pad-jump" type="button">跳</button>
+      </div>
+      <div id="corner">
+        <button id="btn-theater" type="button" title="剧院模式:隐藏游戏,单纯骑行(T)">☾</button>
+        <button id="btn-walk" type="button" title="下车步行,或回到自行车上(F)">⇅</button>
+        <button id="btn-sound" type="button" title="声音(M)">♪</button>
+        <button id="btn-gallery" type="button" title="回到画廊(Esc)">▢</button>
+      </div>
+      <div id="map"></div>
+      <div id="toast"></div>
+    </div>
+
+    <!-- the leaderboard: the score just ridden, a field for an X handle, the table -->
+    <div id="board" class="hidden">
+      <div class="card">
+        <h2 id="board-title">排行榜</h2>
+        <div id="board-you">
+          <p class="score">你的分数 <strong id="board-score">0</strong></p>
+          <form id="board-form" autocomplete="off">
+            <label for="board-handle">@</label>
+            <input id="board-handle" name="handle" maxlength="16" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="你的 X 账号" />
+            <button id="board-post" type="submit">发布分数</button>
+          </form>
+        </div>
+        <p id="board-msg"></p>
+        <ol id="board-list"></ol>
+        <p id="board-empty" class="hidden">还没有人上榜,来做第一个吧。</p>
+        <p id="board-count"></p>
+        <div class="row">
+          <button id="board-again" type="button">再骑一次</button>
+          <button id="board-back" type="button">关闭</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="loading"><div class="pulse"></div><span>正在调颜料…</span></div>
+    <div id="fatal" class="hidden"></div>
+
+    <script type="module" src="/ghosts.mjs"></script>
+  </body>
+</html>
